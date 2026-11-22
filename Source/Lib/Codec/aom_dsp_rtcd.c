@@ -1125,8 +1125,16 @@ void svt_aom_setup_rtcd_internal(EbCpuFlags flags) {
     SET_NEON(svt_ssim_4x4_hbd, svt_ssim_4x4_hbd_c, svt_ssim_4x4_hbd_neon);
 #else
     SET_ONLY_C(svt_aom_sse, svt_aom_sse_c);
+#if defined(SVT_AV1_WASM_SIMD)
+    if (flags & EB_CPU_FLAGS_WASM_SIMD)
+        svt_aom_sse = svt_aom_sse_wasm_simd;
+#endif
 #if CONFIG_ENABLE_HIGH_BIT_DEPTH
     SET_ONLY_C(svt_aom_highbd_sse, svt_aom_highbd_sse_c);
+#if defined(SVT_AV1_WASM_SIMD)
+    if (flags & EB_CPU_FLAGS_WASM_SIMD)
+        svt_aom_highbd_sse = svt_aom_highbd_sse_wasm_simd;
+#endif
 #endif
     SET_ONLY_C(svt_av1_get_crc32c_value, svt_av1_get_crc32c_value_c);
 #if CONFIG_ENABLE_INTER_COMPOUND
@@ -1219,6 +1227,10 @@ void svt_aom_setup_rtcd_internal(EbCpuFlags flags) {
     SET_ONLY_C(svt_aom_sad128x64x4d, svt_aom_sad128x64x4d_c);
     SET_ONLY_C(svt_av1_txb_init_levels, svt_av1_txb_init_levels_c);
     SET_ONLY_C(svt_aom_satd, svt_aom_satd_c);
+#if defined(SVT_AV1_WASM_SIMD)
+    if (flags & EB_CPU_FLAGS_WASM_SIMD)
+        svt_aom_satd = svt_aom_satd_wasm_simd;
+#endif
     SET_ONLY_C(svt_av1_block_error, svt_av1_block_error_c);
     SET_ONLY_C(svt_aom_upsampled_pred, svt_aom_upsampled_pred_c);
 
