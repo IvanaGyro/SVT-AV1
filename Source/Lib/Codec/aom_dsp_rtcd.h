@@ -47,6 +47,10 @@ void svt_aom_setup_rtcd_internal(EbCpuFlags flags);
 RTCD_EXTERN bool svt_aom_use_avx512;
 
 int64_t svt_aom_sse_c(const uint8_t *a, int a_stride, const uint8_t *b, int b_stride, int width, int height);
+#if defined(SVT_AV1_WASM_SIMD)
+int64_t svt_aom_sse_wasm_simd(const uint8_t *a, int a_stride, const uint8_t *b, int b_stride, int width, int height);
+int64_t svt_aom_highbd_sse_wasm_simd(const uint8_t *a8, int a_stride, const uint8_t *b8, int b_stride, int width, int height);
+#endif
 RTCD_EXTERN int64_t(*svt_aom_sse)(const uint8_t *a, int a_stride, const uint8_t *b, int b_stride, int width, int height);
 #if CONFIG_ENABLE_HIGH_BIT_DEPTH
 int64_t svt_aom_highbd_sse_c(const uint8_t *a8, int a_stride, const uint8_t *b8, int b_stride, int width, int height);
@@ -212,6 +216,9 @@ void svt_av1_fwht4x4_c(int16_t* input, int32_t* output, uint32_t stride);
 void svt_av1_fwht4x4_sse4_1(int16_t* input, int32_t* output, uint32_t stride);
 RTCD_EXTERN void (*svt_av1_fwht4x4)(int16_t* input, int32_t* output, uint32_t stride);
 int svt_aom_satd_c(const TranLow *coeff, int length);
+#ifdef SVT_AV1_WASM_SIMD
+int svt_aom_satd_wasm_simd(const TranLow *coeff, int length);
+#endif
 RTCD_EXTERN int(*svt_aom_satd)(const TranLow *coeff, int length);
 int64_t svt_av1_block_error_c(const TranLow *coeff, const TranLow *dqcoeff, intptr_t block_size, int64_t *ssz);
 RTCD_EXTERN int64_t(*svt_av1_block_error)(const TranLow *coeff, const TranLow *dqcoeff, intptr_t block_size, int64_t *ssz);
