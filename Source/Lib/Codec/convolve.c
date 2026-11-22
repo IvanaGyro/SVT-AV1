@@ -109,11 +109,14 @@ void svt_av1_wiener_convolve_add_src_c(const uint8_t* const src, const ptrdiff_t
                                        const ConvolveParams* const conv_params) {
     const int32_t             x_step_q4 = 16;
     const int32_t             y_step_q4 = 16;
-    const InterpKernel* const filters_x = svt_aom_get_filter_base(filter_x);
-    const int32_t             x0_q4     = svt_aom_get_filter_offset(filter_x, filters_x);
+    /* A single fixed 8-tap Wiener kernel is passed, not a 256-byte-aligned
+       subpel table. Do not subtract unrelated pointers or mask an arbitrary
+       allocation down to a 256-byte boundary (undefined C pointer arithmetic). */
+    const InterpKernel* const filters_x = (const InterpKernel*)filter_x;
+    const int32_t             x0_q4     = 0;
 
-    const InterpKernel* const filters_y = svt_aom_get_filter_base(filter_y);
-    const int32_t             y0_q4     = svt_aom_get_filter_offset(filter_y, filters_y);
+    const InterpKernel* const filters_y = (const InterpKernel*)filter_y;
+    const int32_t             y0_q4     = 0;
 
     uint16_t      temp[WIENER_MAX_EXT_SIZE * MAX_SB_SIZE];
     const int32_t intermediate_height = (((h - 1) * y_step_q4 + y0_q4) >> SUBPEL_BITS) + SUBPEL_TAPS - 1;
@@ -203,11 +206,12 @@ void svt_av1_highbd_wiener_convolve_add_src_c(const uint8_t* const src, const pt
                                               const ConvolveParams* const conv_params, const int32_t bd) {
     const int32_t             x_step_q4 = 16;
     const int32_t             y_step_q4 = 16;
-    const InterpKernel* const filters_x = svt_aom_get_filter_base(filter_x);
-    const int32_t             x0_q4     = svt_aom_get_filter_offset(filter_x, filters_x);
+    /* Fixed Wiener kernel, not a 256-byte-aligned subpel table. */
+    const InterpKernel* const filters_x = (const InterpKernel*)filter_x;
+    const int32_t             x0_q4     = 0;
 
-    const InterpKernel* const filters_y = svt_aom_get_filter_base(filter_y);
-    const int32_t             y0_q4     = svt_aom_get_filter_offset(filter_y, filters_y);
+    const InterpKernel* const filters_y = (const InterpKernel*)filter_y;
+    const int32_t             y0_q4     = 0;
 
     uint16_t      temp[WIENER_MAX_EXT_SIZE * MAX_SB_SIZE];
     const int32_t intermediate_height = (((h - 1) * y_step_q4 + y0_q4) >> SUBPEL_BITS) + SUBPEL_TAPS;
