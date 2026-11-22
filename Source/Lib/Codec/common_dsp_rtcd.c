@@ -299,6 +299,8 @@ EbCpuFlags svt_aom_get_cpu_flags_to_use() {
     return flags;
 }
 
+#elif defined(SVT_AV1_WASM_SIMD)
+EbCpuFlags svt_aom_get_cpu_flags_to_use() { return EB_CPU_FLAGS_WASM_SIMD; }
 #else
 EbCpuFlags svt_aom_get_cpu_flags_to_use() { return 0; }
 #endif

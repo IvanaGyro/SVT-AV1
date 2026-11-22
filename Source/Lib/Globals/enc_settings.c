@@ -1829,6 +1829,9 @@ static EbErrorType str_to_asm(const char* nptr, EbCpuFlags* out) {
         {"5", (EB_CPU_FLAGS_SVE << 1) - 1},
         {"sve2", (EB_CPU_FLAGS_SVE2 << 1) - 1},
         {"6", (EB_CPU_FLAGS_SVE2 << 1) - 1},
+#elif defined(SVT_AV1_WASM_SIMD)
+        {"wasm-simd128", EB_CPU_FLAGS_WASM_SIMD},
+        {"1", EB_CPU_FLAGS_WASM_SIMD},
 #endif
         {"max", EB_CPU_FLAGS_ALL},
         {"100", EB_CPU_FLAGS_ALL},

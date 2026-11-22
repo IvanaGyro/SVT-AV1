@@ -790,6 +790,8 @@ ConfigDescription config_entry_global_options[] = {
     {ASM_TYPE_TOKEN,
 #ifdef ARCH_AARCH64
      "Limit assembly instruction set, default is max [c, neon, crc32, neon_dotprod, neon_i8mm, sve, sve2, max]"
+#elif defined(SVT_AV1_WASM_SIMD)
+     "Select native WebAssembly SIMD128 kernels, default is max [c, wasm-simd128, max]"
 #else
      "Limit assembly instruction set, only applicable to x86, default is max [c, mmx, sse, sse2, sse3, ssse3, "
      "sse4_1, sse4_2, avx, avx2, avx512, max]"

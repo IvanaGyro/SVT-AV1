@@ -302,6 +302,9 @@ set(all_files
         warped_motion.h
         )
 
+if(SVT_AV1_WASM_SIMD)
+    list(APPEND all_files wasm_simd.c)
+endif()
 add_library(CODEC OBJECT ${all_files})
 
 if(SVT_AV1_NVTX)
