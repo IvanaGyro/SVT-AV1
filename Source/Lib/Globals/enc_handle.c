@@ -148,6 +148,8 @@ static const char* get_asm_level_name_str(EbCpuFlags cpu_flags) {
         {"neon_i8mm",    EB_CPU_FLAGS_NEON_I8MM},
         {"sve",          EB_CPU_FLAGS_SVE},
         {"sve2",         EB_CPU_FLAGS_SVE2}
+#elif defined(SVT_AV1_WASM_SIMD)
+        {"wasm-simd128", EB_CPU_FLAGS_WASM_SIMD}
 #endif
     };
     // clang-format on
@@ -801,6 +803,10 @@ static EbErrorType load_default_buffer_configuration_settings(SequenceControlSet
         const EbCpuFlags cpu_flags_to_use = svt_aom_get_cpu_flags_to_use();
         scs->static_config.use_cpu_flags &= cpu_flags_to_use;
         SVT_INFO("[asm level on system : up to %s]\n", get_asm_level_name_str(cpu_flags));
+        SVT_INFO("[asm level selected : up to %s]\n", get_asm_level_name_str(scs->static_config.use_cpu_flags));
+#elif defined(SVT_AV1_WASM_SIMD)
+        scs->static_config.use_cpu_flags &= EB_CPU_FLAGS_WASM_SIMD;
+        SVT_INFO("[asm level on system : up to wasm-simd128]\n");
         SVT_INFO("[asm level selected : up to %s]\n", get_asm_level_name_str(scs->static_config.use_cpu_flags));
 #else
         scs->static_config.use_cpu_flags &= 0;

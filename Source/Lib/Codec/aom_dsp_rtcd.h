@@ -955,6 +955,9 @@ void svt_vmaf_hpass_row_c(const uint8_t *src_row, int width, int16_t *h_row);
 RTCD_EXTERN void(*svt_copy_mi_map_grid)(MbModeInfo** mi_grid_ptr, uint32_t mi_stride, uint8_t num_rows, uint8_t num_cols);
 void svt_copy_mi_map_grid_c(MbModeInfo** mi_grid_ptr, uint32_t mi_stride, uint8_t num_rows, uint8_t num_cols);
 void svt_copy_mi_map_grid_avx2(MbModeInfo** mi_grid_ptr, uint32_t mi_stride, uint8_t num_rows, uint8_t num_cols);
+#ifdef SVT_AV1_WASM_SIMD
+void svt_copy_mi_map_grid_wasm_simd(MbModeInfo** mi_grid_ptr, uint32_t mi_stride, uint8_t num_rows, uint8_t num_cols);
+#endif
 RTCD_EXTERN void (*svt_av1_add_block_observations_internal)(uint32_t n, const double val, const double recp_sqr_norm, double *buffer, double *buffer_norm, double *b, double *A);
 void svt_av1_add_block_observations_internal_c(uint32_t n, const double val, const double recp_sqr_norm, double *buffer, double *buffer_norm, double *b, double *A);
 RTCD_EXTERN void (*svt_av1_pointwise_multiply)(const float *a, float *b, float *c, double *b_d, double *c_d, int32_t n);

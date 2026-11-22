@@ -468,6 +468,8 @@ typedef uint64_t EbCpuFlags;
 // sad_loop_kernel has special code for this core.
 #define EB_CPU_FLAGS_NEOVERSE_V2 (1 << 6)
 
+#elif defined(SVT_AV1_WASM_SIMD)
+#define EB_CPU_FLAGS_WASM_SIMD (1ULL << 0)
 #endif
 #define EB_CPU_FLAGS_INVALID (1ULL << (sizeof(EbCpuFlags) * 8ULL - 1ULL))
 #define EB_CPU_FLAGS_ALL ((EB_CPU_FLAGS_INVALID >> 1) - 1)

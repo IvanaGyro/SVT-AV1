@@ -238,6 +238,8 @@ void svt_aom_setup_rtcd_internal(EbCpuFlags flags) {
         but for safe limiting cpu flags again. */
 #if defined ARCH_X86_64 || defined ARCH_AARCH64
     flags &= svt_aom_get_cpu_flags_to_use();
+#elif defined(SVT_AV1_WASM_SIMD)
+    flags &= EB_CPU_FLAGS_WASM_SIMD;
 #else
     flags = 0;
     //to use C: flags=0
@@ -1503,6 +1505,10 @@ void svt_aom_setup_rtcd_internal(EbCpuFlags flags) {
     SET_ONLY_C(svt_vmaf_hpass_row, svt_vmaf_hpass_row_c);
 #endif
     SET_ONLY_C(svt_copy_mi_map_grid, svt_copy_mi_map_grid_c);
+#if defined(SVT_AV1_WASM_SIMD)
+    if (flags & EB_CPU_FLAGS_WASM_SIMD)
+        svt_copy_mi_map_grid = svt_copy_mi_map_grid_wasm_simd;
+#endif
 #if CONFIG_ENABLE_FILM_GRAIN
     SET_ONLY_C(svt_av1_add_block_observations_internal, svt_av1_add_block_observations_internal_c);
     SET_ONLY_C(svt_av1_pointwise_multiply, svt_av1_pointwise_multiply_c);

@@ -59,6 +59,13 @@ int main(void) {}
 " HAVE_ARM_PLATFORM)
 
 option(COMPILE_C_ONLY "Compile only C code with no simds (autodetect, default off for x86)" OFF)
+option(SVT_AV1_WASM_SIMD "Enable explicitly ported native WebAssembly SIMD128 kernels" OFF)
+if(SVT_AV1_WASM_SIMD)
+    if(NOT EMSCRIPTEN)
+        message(FATAL_ERROR "SVT_AV1_WASM_SIMD requires Emscripten")
+    endif()
+    add_compile_definitions(SVT_AV1_WASM_SIMD=1)
+endif()
 option(MINIMAL_BUILD "Enable minimal build" OFF)
 if(MINIMAL_BUILD)
     add_definitions(-DMINIMAL_BUILD=1)
